@@ -1,0 +1,22 @@
+name: testing dockerhub push
+on:
+  push:
+    branches:
+      - master
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+      - name: run release script
+        run: |
+            cd docker
+            bash ./release.sh --build
+      #    - name: Build and Push Docker image
+      #      id: docker_build_push
+      #      uses: docker/build-push-action@v1
+      #      with:
+      #        username: ${{ secrets.DOCKER_USERNAME }}
+      #        password: ${{ secrets.DOCKER_PASSWORD }}
+      #        repository: jlrivero/test_github_actions
