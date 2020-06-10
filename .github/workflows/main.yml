@@ -2,6 +2,7 @@ name: testing dockerhub push
 on:
   push:
     branches:
+      - dockerhub
       - master
 jobs:
   job1:
