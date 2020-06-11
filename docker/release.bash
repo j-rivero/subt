@@ -66,7 +66,8 @@ fi
 
 # Sanity check: Make sure that the parameter is supported.
 if [[ "$COMMAND" != "--build" ]] && [[ "$COMMAND" != "--tag" ]] &&
-   [[ "$COMMAND" != "--push" ]]  && [[ "$COMMAND" != "--all" ]]; then
+   [[ "$COMMAND" != "--push" ]]  && [[ "$COMMAND" != "--all" ]] &&
+   [[ "$COMMAND" != "--build-image" ]]; then
   usage
 fi
 
