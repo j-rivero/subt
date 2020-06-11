@@ -5,19 +5,24 @@ on:
       - dockerhub
       - master
 jobs:
-  job1:
+  build docker image:
     runs-on: ubuntu-latest
+    strategy:
+        matrix:
+            image_name: [cloudsim_sim cloudsim_bridge]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
+
       - name: Install base dependencies
         run: |
           sudo apt update;
           sudo apt-get install -y docker
+
       - name: run release script
         run: |
             cd docker
-            bash ./release.bash --build
+            bash ./release.bash --build-image ${{ matrix.image_name }}
       #    - name: Build and Push Docker image
       #      id: docker_build_push
       #      uses: docker/build-push-action@v1
