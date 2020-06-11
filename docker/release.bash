@@ -73,14 +73,14 @@ fi
 if [[ "$COMMAND" == "--build" ]] || [[ "$COMMAND" == "--all" ]]; then
   echo -e "\e[1;34m## Building cloudsim_sim image\e[0m\n"
   ./build.bash cloudsim_sim --no-cache
-  echo -e "\e[1;34m## Building cloudsim_bridge image\e[0m\n"
-  ./build.bash cloudsim_bridge --no-cache
+  # echo -e "\e[1;34m## Building cloudsim_bridge image\e[0m\n"
+  # ./build.bash cloudsim_bridge --no-cache
 
   # Only build the subt_sim_entry if building for the public dockerhub registry
-  if [[ "$repo" != *"private" ]]; then
-    echo -e "\e[1;34m## Building subt_sim_entry image\e[0m\n"
-    ./build.bash subt_sim_entry --no-cache
-  fi
+  #if [[ "$repo" != *"private" ]]; then
+  #  echo -e "\e[1;34m## Building subt_sim_entry image\e[0m\n"
+  #  ./build.bash subt_sim_entry --no-cache
+  # fi
 fi
 
 # Tag the images.
