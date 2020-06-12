@@ -16,10 +16,6 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v2
 
-      - name: Install Dependencies (macOS)
-        run: brew install ninja
-        if: matrix.image_name == 'subt_sim_entry'
-
       - name: Install base dependencies
         if: ${{ success() }}
         run: |
