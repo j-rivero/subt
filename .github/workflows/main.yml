@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
         matrix:
-            image_name: [cloudsim_sim cloudsim_bridge]
+            image_name: [cloudsim_sim cloudsim_bridge subt_shell subt_sim_entry]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
@@ -22,7 +22,7 @@ jobs:
       - name: run release script
         run: |
             cd docker
-            bash ./release.bash --build-image ${{ matrix.image_name }}
+            bash +xe ./build.bash --build-image ${{ matrix.image_name }}
       #    - name: Build and Push Docker image
       #      id: docker_build_push
       #      uses: docker/build-push-action@v1
