@@ -47,9 +47,10 @@ usage()
 }
 
 # Call usage() function if arguments not supplied.
-[[ $# -ne 1 ]] && usage
+[[ $# -ne 2 ]] && usage
 
 COMMAND=$1
+SECOND_ARG=$2
 
 # Get the repo name.
 repo=$(hg paths)
@@ -85,9 +86,9 @@ if [[ "$COMMAND" == "--build" ]] || [[ "$COMMAND" == "--all" ]]; then
    fi
 fi
 
-Build the images.
+# Build custom image
 if [[ "$COMMAND" == "--build-image" ]]; then
-  echo -e "\e[1;34m## Building ${image_name} image\e[0m\n"
+  echo -e "\e[1;34m## Building ${SECOND_ARG} image\e[0m\n"
   ./build.bash ${image_name} --no-cache
 fi
 
