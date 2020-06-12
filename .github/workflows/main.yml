@@ -64,4 +64,4 @@ jobs:
           TAG: ${{ env.registry }}:latest
         with:
           args: push ${IMAGE_TAG}
-        if: matrix.image_name == 'subt_sim_entry' && ${{ success() }}
+        if: matrix.image_name == 'subt_sim_entry'
