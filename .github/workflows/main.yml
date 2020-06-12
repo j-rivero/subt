@@ -17,30 +17,35 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install base dependencies
+        if: ${{ success() }}
         run: |
           sudo apt update;
           sudo apt-get install -y docker
 
       - name: Run build script
+        if: ${{ success() }}
         run: |
             cd docker
             bash +xe ./build.bash ${{ matrix.image_name }}
 
       - name: Tag image
+        if: ${{ success() }}
         run: docker tag ${{ matrix.image_name }}:latest ${{ env.registry }}:${{ matrix.image_name }}_latest
 
       # only reserverd for subt_sim_entry
       - name: Tag latest image
-        if: ${{ matrix.image_name }} == 'subt_sim_entry'
+        if: matrix.image_name == 'subt_sim_entry' && ${{ success() }}
         run: docker tag ${{ matrix.image_name }}:latest ${{ env.registry }}/subt:latest
 
       - name: Login to docker hub
+        if: ${{ success() }}
         uses: actions-hub/docker/login@master
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push to docker { env.registry }
+        if: ${{ success() }}
         uses: actions-hub/docker@master
         env:
           NAME: ${{ matrix.image_name }}
@@ -48,9 +53,9 @@ jobs:
         with:
           args: push ${IMAGE_TAG}
 
-      - name: Push latest to docker { env.registry }
+      - name: Push latest to docker
+        if: matrix.image_name == 'subt_sim_entry' && ${{ success() }}
         uses: actions-hub/docker@master
-        if: ${{ matrix.image_name }} == 'subt_sim_entry'
         env:
           NAME: ${{ matrix.image_name }}
           TAG: ${{ env.registry }}:latest
