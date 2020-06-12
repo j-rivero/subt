@@ -11,7 +11,7 @@ jobs:
       registry: jlrivero/subt
     strategy:
       matrix:
-        image_name: [cloudsim_sim, cloudsim_bridge, subt_shell, subt_sim_entry]
+        image_name: ['cloudsim_sim', 'cloudsim_bridge', 'subt_shell', 'subt_sim_entry']
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
@@ -44,7 +44,11 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Push to docker { env.registry }
+      - name: Install Dependencies (macOS)
+        run: brew install ninja
+        if: matrix.image_name == 'macos-latest'
+
+      - name: Push to docker
         if: ${{ success() }}
         uses: actions-hub/docker@master
         env:
