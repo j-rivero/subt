@@ -24,17 +24,20 @@ jobs:
             cd docker
             bash +xe ./build.bash ${{ matrix.image_name }}
 
-      - name: Tag image
-        run: |
-            docker tag ${{ matrix.image_name }}:latest subt:${{ matrix.image_name }}_latest
+       # - name: Tag image
+       #         run: |
+       #            docker tag ${{ matrix.image_name }}:latest jlrivero/subt:${{ matrix.image_name }}_latest
 
       - name: Login to docker hub
         uses: actions-hub/docker/login@master
         env:
-            DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-            DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push to docker registry
         uses: actions-hub/docker@master
+        #        env:
+        #  IMAGE: ${{ matrix.image_name }}
+        #  TAG: ${{ matrix.image_name }}_latest
         with:
-            args: push jlrivero/subt:${{ matrix.image_name }}_latest
+          args: push ${{ github.repository }}:${IMAGE_TAG}
