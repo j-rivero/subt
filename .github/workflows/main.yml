@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
         matrix:
-            image_name: [cloudsim_sim cloudsim_bridge subt_shell subt_sim_entry]
+            image_name: [cloudsim_sim, cloudsim_bridge, subt_shell, subt_sim_entry]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
