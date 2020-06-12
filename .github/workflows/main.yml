@@ -37,4 +37,4 @@ jobs:
       - name: Push to docker registry
         uses: actions-hub/docker@master
         with:
-            args: push subt:${{ matrix.image_name }}_latest
+            args: push jlrivero/subt:${{ matrix.image_name }}_latest
