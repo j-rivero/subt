@@ -19,14 +19,22 @@ jobs:
           sudo apt update;
           sudo apt-get install -y docker
 
-      - name: run release script
+      - name: Run build script
         run: |
             cd docker
             bash +xe ./build.bash ${{ matrix.image_name }}
-      #    - name: Build and Push Docker image
-      #      id: docker_build_push
-      #      uses: docker/build-push-action@v1
-      #      with:
-      #        username: ${{ secrets.DOCKER_USERNAME }}
-      #        password: ${{ secrets.DOCKER_PASSWORD }}
-      #        repository: jlrivero/test_github_actions
+
+      - name: Tag image
+        run: |
+            docker tag ${{ matrix.image_name }}:latest subt:${{ matrix.image_name }}_latest
+
+      - name: Login to docker hub
+        uses: actions-hub/docker/login@master
+        env:
+            DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+            DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push to docker registry
+        uses: actions-hub/docker@master
+        with:
+            args: push subt:${{ matrix.image_name }}_latest
