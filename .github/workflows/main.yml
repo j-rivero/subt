@@ -27,12 +27,12 @@ jobs:
             bash +xe ./build.bash ${{ matrix.image_name }}
 
       - name: Tag image
-        run: docker tag ${{ matrix.image_name }}:latest ${registry}:${{ matrix.image_name }}_latest
+        run: docker tag ${{ matrix.image_name }}:latest ${{ env.registry }}:${{ matrix.image_name }}_latest
 
       # only reserverd for subt_sim_entry
       - name: Tag latest image
         if: ${{ matrix.image_name }} == 'subt_sim_entry'
-        run: docker tag ${{ matrix.image_name }}:latest ${registry}/subt:latest
+        run: docker tag ${{ matrix.image_name }}:latest ${{ env.registry }}/subt:latest
 
       - name: Login to docker hub
         uses: actions-hub/docker/login@master
@@ -40,19 +40,19 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Push to docker registry
+      - name: Push to docker { env.registry }
         uses: actions-hub/docker@master
         env:
           NAME: ${{ matrix.image_name }}
-          TAG: ${registry}:${{ matrix.image_name }}_latest
+          TAG: ${{ env.registry }}:${{ matrix.image_name }}_latest
         with:
           args: push ${IMAGE_TAG}
 
-      - name: Push latest to docker registry
+      - name: Push latest to docker { env.registry }
         uses: actions-hub/docker@master
         if: ${{ matrix.image_name }} == 'subt_sim_entry'
         env:
           NAME: ${{ matrix.image_name }}
-          TAG: ${registry}:latest
+          TAG: ${{ env.registry }}:latest
         with:
           args: push ${IMAGE_TAG}
