@@ -7,6 +7,8 @@ on:
 jobs:
   build_docker_image:
     runs-on: ubuntu-latest
+    env:
+      registry: jlrivero/subt
     strategy:
       matrix:
         image_name: [cloudsim_sim, cloudsim_bridge, subt_shell, subt_sim_entry]
@@ -25,8 +27,12 @@ jobs:
             bash +xe ./build.bash ${{ matrix.image_name }}
 
       - name: Tag image
-        run: |
-            docker tag ${{ matrix.image_name }}:latest jlrivero/subt:${{ matrix.image_name }}_latest
+        run: docker tag ${{ matrix.image_name }}:latest ${registry}:${{ matrix.image_name }}_latest
+
+      # only reserverd for subt_sim_entry
+      - name: Tag latest image
+        if: ${{ matrix.image_name }} == 'subt_sim_entry'
+        run: docker tag ${{ matrix.image_name }}:latest ${registry}/subt:latest
 
       - name: Login to docker hub
         uses: actions-hub/docker/login@master
@@ -38,6 +44,15 @@ jobs:
         uses: actions-hub/docker@master
         env:
           NAME: ${{ matrix.image_name }}
-          TAG: jlrivero/subt:${{ matrix.image_name }}_latest
+          TAG: ${registry}:${{ matrix.image_name }}_latest
+        with:
+          args: push ${IMAGE_TAG}
+
+      - name: Push latest to docker registry
+        uses: actions-hub/docker@master
+        if: ${{ matrix.image_name }} == 'subt_sim_entry'
+        env:
+          NAME: ${{ matrix.image_name }}
+          TAG: ${registry}:latest
         with:
           args: push ${IMAGE_TAG}
