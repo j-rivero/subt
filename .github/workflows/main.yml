@@ -22,7 +22,7 @@ jobs:
       - name: run release script
         run: |
             cd docker
-            bash +xe ./build.bash --build-image ${{ matrix.image_name }}
+            bash +xe ./build.bash ${{ matrix.image_name }}
       #    - name: Build and Push Docker image
       #      id: docker_build_push
       #      uses: docker/build-push-action@v1
