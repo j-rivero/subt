@@ -16,6 +16,10 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v2
 
+      - name: Install Dependencies (macOS)
+        run: brew install ninja
+        if: matrix.image_name == 'subt_sim_entry'
+
       - name: Install base dependencies
         if: ${{ success() }}
         run: |
@@ -34,8 +38,8 @@ jobs:
 
       # only reserverd for subt_sim_entry
       - name: Tag latest image
-        if: matrix.image_name == 'subt_sim_entry' && ${{ success() }}
         run: docker tag ${{ matrix.image_name }}:latest ${{ env.registry }}/subt:latest
+        if: matrix.image_name == 'subt_sim_entry' && ${{ success() }}
 
       - name: Login to docker hub
         if: ${{ success() }}
@@ -43,10 +47,6 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Install Dependencies (macOS)
-        run: brew install ninja
-        if: matrix.image_name == 'macos-latest'
 
       - name: Push to docker
         if: ${{ success() }}
@@ -58,10 +58,10 @@ jobs:
           args: push ${IMAGE_TAG}
 
       - name: Push latest to docker
-        if: matrix.image_name == 'subt_sim_entry' && ${{ success() }}
         uses: actions-hub/docker@master
         env:
           NAME: ${{ matrix.image_name }}
           TAG: ${{ env.registry }}:latest
         with:
           args: push ${IMAGE_TAG}
+        if: matrix.image_name == 'subt_sim_entry' && ${{ success() }}
