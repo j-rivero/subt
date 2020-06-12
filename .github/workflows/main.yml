@@ -8,8 +8,8 @@ jobs:
   build_docker_image:
     runs-on: ubuntu-latest
     strategy:
-        matrix:
-            image_name: [cloudsim_sim, cloudsim_bridge, subt_shell, subt_sim_entry]
+      matrix:
+        image_name: [cloudsim_sim, cloudsim_bridge, subt_shell, subt_sim_entry]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
@@ -24,9 +24,9 @@ jobs:
             cd docker
             bash +xe ./build.bash ${{ matrix.image_name }}
 
-       # - name: Tag image
-       #         run: |
-       #            docker tag ${{ matrix.image_name }}:latest jlrivero/subt:${{ matrix.image_name }}_latest
+      - name: Tag image
+        run: |
+            docker tag ${{ matrix.image_name }}:latest jlrivero/subt:${{ matrix.image_name }}_latest
 
       - name: Login to docker hub
         uses: actions-hub/docker/login@master
@@ -37,7 +37,7 @@ jobs:
       - name: Push to docker registry
         uses: actions-hub/docker@master
         env:
-          IMAGE_NAME: ${{ matrix.image_name }}
-          IMAGE_TAG: jlrivero/subt:${{ matrix.image_name }}_latest
+          NAME: ${{ matrix.image_name }}
+          TAG: jlrivero/subt:${{ matrix.image_name }}_latest
         with:
           args: push ${IMAGE_TAG}
