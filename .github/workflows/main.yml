@@ -36,8 +36,8 @@ jobs:
 
       - name: Push to docker registry
         uses: actions-hub/docker@master
-        #        env:
-        #  IMAGE: ${{ matrix.image_name }}
-        #  TAG: ${{ matrix.image_name }}_latest
+        env:
+          IMAGE: ${{ matrix.image_name }}
+          TAG: ${{ matrix.image_name }}_latest
         with:
-          args: push ${{ github.repository }}:${IMAGE_TAG}
+          args: push jlrivero/subt:${IMAGE_TAG}
