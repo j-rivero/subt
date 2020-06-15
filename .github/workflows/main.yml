@@ -1,9 +1,8 @@
 name: testing dockerhub push
 on:
   push:
-    branches:
-      - dockerhub
-      - master
+    tags:
+      - dockerhub_release_.*  # Launch dockerhub push on dockerhub_release_* tags
 jobs:
   build_docker_image:
     runs-on: ubuntu-latest
