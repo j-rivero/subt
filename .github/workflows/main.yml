@@ -33,7 +33,7 @@ jobs:
 
       # only reserverd for subt_sim_entry
       - name: Tag latest image
-        run: docker tag ${{ matrix.image_name }}:latest ${{ env.registry }}/subt:latest
+        run: docker tag ${{ matrix.image_name }}:latest ${{ env.registry }}:latest
         if: matrix.image_name == 'subt_sim_entry'
 
       - name: Login to docker hub
