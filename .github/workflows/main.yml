@@ -19,10 +19,9 @@ jobs:
         if: ${{ success() }}
         run: |
           sudo apt update;
-          sudo apt-get install -y docker
+          sudo apt-get install -y docker make-this-to-fail
 
       - name: Run build script
-        if: ${{ success() }}
         run: |
             cd docker
             bash +xe ./build.bash ${{ matrix.image_name }}
